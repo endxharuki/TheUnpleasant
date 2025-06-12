@@ -274,22 +274,18 @@ void GameScene::LoadMap(const std::string& filename)
 		
 		std::stringstream ss(line);
 		std::string objName;
-
 		std::getline(ss, objName, ',');
 
-		if (objName == "MeshField")
+		if (objName == "MeshField")//メッシュフィールドだったら別処理
 		{
 			std::string fieldFileName;
 			std::getline(ss, fieldFileName, ',');
 			AddGameObject<MeshField>(0)->LoadMeshField(fieldFileName);
 		}
-		else
+		else//それ以外の王ジェクトだったら
 		{
-			XMFLOAT3 pos;
-			XMFLOAT3 size;
-			XMFLOAT3 rot;
-
-
+			XMFLOAT3 pos, size, rot;
+			
 			std::string posX, posY, posZ;
 			std::string sizeX, sizeY, sizeZ;
 			std::string rotX, rotY, rotZ;
@@ -323,7 +319,7 @@ void GameScene::LoadMap(const std::string& filename)
 				AddGameObject<GameSky>(1)->GetComponent<Transform>()->SetTransform(pos, rot, size);
 
 			}
-			if (objName == "Block")
+			else if (objName == "Block")
 			{
 				AddGameObject<Block>(1)->GetComponent<Transform>()->SetTransform(pos, rot, size);
 
@@ -332,6 +328,11 @@ void GameScene::LoadMap(const std::string& filename)
 			{
 				AddGameObject<Tree>(2)->GetComponent<Transform>()->SetTransform(pos,rot,size);
 			}
+			else if (objName == "Grass")
+			{
+				
+			}
+
 
 		}
 	}

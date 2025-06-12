@@ -14,6 +14,7 @@ class Player : public GameObject
 {
 private:
 
+	//プレイヤーの行動登録
 	std::unordered_map<StateType, std::shared_ptr<PlayerState>> m_StateList;
 	std::shared_ptr<PlayerState> m_CurrentState = nullptr;
 

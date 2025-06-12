@@ -13,7 +13,6 @@ void Transform3DAnimationComponent::Init()
 		//m_Model->Load(m_ModelData);*/
 
 		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, m_ShaderVS);
-		//Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, m_ShaderVS);
 		Renderer::CreatePixelShader(&m_PixelShader, m_ShaderPS);
 
 		ComponentNumber = 2;

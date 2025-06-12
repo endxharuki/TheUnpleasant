@@ -33,8 +33,7 @@ void PlayerJumpState::Update()
 
 	PlayerCamera* camera = Scene::GetInstance()->GetScene<GameScene>()->GetGameObject<PlayerCamera>();
 	XMFLOAT3 cameraRot = camera->GetComponent<Transform>()->GetRotation();
-	float PI = 3.141592;
-
+	
 	if (GetKeyState('S') & 0x8000) {
 		posRot = 0.0f;
 		/*m_AnimationName = "Run";*/

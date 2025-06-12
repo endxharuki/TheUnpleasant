@@ -75,7 +75,6 @@ void TitleCamera::Update()
 	float lenghtY = Hight - targetPos.y;
 	lenghtY = sqrt(lenghtY * lenghtY);
 
-	float PI = 3.141592;
 	//è„â∫Ç≥ÇπÇÈ
 	{
 

@@ -63,32 +63,14 @@ z = r * sin(Φ) * sin(θ)
 
 void PlayerCamera::Init()
 {
-
-
-	AddComponent<Transform3DComponent>();
+	Transform3DComponent* trans =  AddComponent<Transform3DComponent>();
 
 	GetComponent<Transform3DComponent>()->SetPosition(XMFLOAT3(0.0f, 3.0f, 3.5f));
-
 	AddComponent<Circle2DCollider>()->OnImGui();
 	/*m_Position = XMFLOAT3(0.0f, 20.0f, -30.0f);*/
 	m_Target = { 0.0f,0.0f,0.0f };
 
 	GetComponent<Circle2DCollider>()->SetRadius(200.0f);
-
-	//float vx = GetComponent<Transform3DComponent>()->GetPosition().x - m_Target.x;
-	//float vz = GetComponent<Transform3DComponent>()->GetPosition().z - m_Target.z;
-	//float vy = GetComponent<Transform3DComponent>()->GetPosition().y - m_Target.y;
-
-	//float x2 = vx * vx;
-	//float y2 = vy * vy;
-	//float z2 = vz * vz;
-
-	////球座標を求める
-	//m_Len = sqrt(x2 + y2 + z2);
-	//m_Angle = atan(vz / vx);
-	//m_Fai = atan(sqrt(x2 + z2) / vy);
-
-	
 
 }
 
@@ -156,16 +138,17 @@ void PlayerCamera::Draw()
 void PlayerCamera::CameraControl()
 {
 	//プレイヤー
-	XMFLOAT3 playerPos = Scene::GetInstance()->GetScene<GameScene>()->GetGameObject<Player>()->GetComponent<Transform>()->GetPosition();
 	Player* player = Scene::GetInstance()->GetScene<GameScene>()->GetGameObject<Player>();
+
+	XMFLOAT3 playerPos = player->GetComponent<Transform>()->GetPosition();
 	//カメラ
 	XMFLOAT3 cameraPos = GetComponent<Transform3DComponent>()->GetPosition();
 	XMFLOAT3 cameraOldPos = GetComponent<Transform3DComponent>()->GetOldPosition();
 	XMFLOAT3 cameraRot = GetComponent<Transform3DComponent>()->GetRotation();
 	float posRot = GetComponent<Transform3DComponent>()->GetRot();
-	float PI = 3.14159265359;
+	
 	float Radian = PI * 0.01f;
-
+	
 	//RotateAroundを使うならこれ絶対宣言してね
 	GetComponent<Transform3DComponent>()->RotateAroundInit(playerPos);
 	if (doOnce == false)
@@ -179,7 +162,6 @@ void PlayerCamera::CameraControl()
 	lenghtY = sqrt(lenghtY * lenghtY);
 
 	XMFLOAT3 vec = { 0.707f,0.0f,0.707f };
-
 	
 	//キーボードバージョン
 	{
@@ -222,7 +204,6 @@ void PlayerCamera::CameraControl()
 	if (OnCursor == true)
 	{
 		XMFLOAT2 centerPos = { 760,410 };
-		
 		//現在のカーソルのポジション取得
 		GetCursorPos(&m_MousePoint);
 
@@ -234,7 +215,6 @@ void PlayerCamera::CameraControl()
 
 		difference.x = m_CursorX - centerPos.x;
 		difference.y = m_CursorY - centerPos.y;
-
 		
 		//カーソルが横に動いた場合
 		if (difference.x <= -addX || difference.x >= addX)
@@ -338,7 +318,6 @@ void PlayerCamera::AssistCamera()
 {
 	XMFLOAT2 centerPos = GetComponent<Circle2DCollider>()->GetPosition();
 	XMFLOAT2 targetPos = GetComponent<Circle2DCollider>()->GetTargetPosition();
-	float PI = 3.14159265359;
 	float Radian = PI * 0.01f;
 
 	if (GetComponent<Circle2DCollider>()->GetIsInObject() == true) 
@@ -380,7 +359,7 @@ void PlayerCamera::DrawImGui()
 	XMFLOAT3 cameraPos = GetComponent<Transform3DComponent>()->GetPosition();
 
 	XMFLOAT3 vel = {m_Target.x - cameraPos.x,m_Target.x - cameraPos.x ,m_Target.x - cameraPos.x };
-	vel = GetComponent<GameObjectComponent>()->Normalize(vel);
+	vel = Normalize(vel);
 
 	float cameraPosTop = cameraPos.y + playerPos.y;
 	float cameraPosBottom = playerPos.y - (cameraPos.y - playerPos.y);

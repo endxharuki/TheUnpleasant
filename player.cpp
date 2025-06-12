@@ -69,6 +69,7 @@ void Player::Init()
 
 	Tag = "Player";
 
+	//プレイヤーの行動登録
 	RegisterState(StateType::Idle, std::make_shared<PlayerIdleState>());
 	RegisterState(StateType::Move, std::make_shared<PlayerMoveState>());
 	RegisterState(StateType::Jump, std::make_shared<PlayerJumpState>());
@@ -197,8 +198,6 @@ void Player::PlayerControl()
 
 	float posRot = GetComponent<Transform>()->GetRot();
 	XMFLOAT3 cameraRot = Scene::GetInstance()->GetScene<GameScene>()->GetGameObject<PlayerCamera>()->GetComponent<Transform>()->GetRotation();
-	float PI = 3.141592;
-
 	//通常スキル
 	if (Input::GetInstance()->GetKeyTrigger(VK_SPACE))
 	{
@@ -214,10 +213,7 @@ void Player::PlayerControl()
 		else {
 			ChangeState(StateType::Idle);
 		}
-
 	}
-
-
 	//ジャンプ処理
 	if (GetKeyState('Q') & 0x8000 && m_IsGravity == false) {
 
@@ -225,12 +221,11 @@ void Player::PlayerControl()
 		//GetComponent<Audio>()->Play(false);
 
 	}
-
+	//スキル1
 	if (GetAsyncKeyState(VK_RBUTTON) & 0x8000)
 	{
 		ChangeState(StateType::Skill1);
 	}
-	
 	
 	//重力処理
 	if (m_CurrentState != nullptr)
@@ -247,7 +242,6 @@ void Player::PlayerControl()
 	else {
 		m_GravityScale = 0.05f;
 	}
-
 	if (Input::GetInstance()->GetKeyTrigger('G'))
 	{
 		m_IsGravity = !m_IsGravity;

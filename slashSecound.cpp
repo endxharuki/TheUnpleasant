@@ -61,8 +61,6 @@ void SlashSecound::Init()
 
 	XMFLOAT3 vector = { capsulePos.x - playerPos.x,(capsulePos.y - playerPos.y) - 1.0f,capsulePos.z - playerPos.z };
 
-	float PI = 3.141592;
-
 	////斜めにする
 	float Rot = PI / 4;
 
@@ -129,8 +127,6 @@ void SlashSecound::Update()
 
 	XMFLOAT3 capsulePos = GetComponent<Collider>()->GetPosition();
 	
-	float PI = 3.141592;
-
 	//球座標タイプ
 	float rotScale = PI * 0.05f;
 

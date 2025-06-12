@@ -37,7 +37,6 @@ void PlayerSkill1State::Update()
 
 	PlayerCamera* camera = Scene::GetInstance()->GetScene<GameScene>()->GetGameObject<PlayerCamera>();
 	XMFLOAT3 cameraRot = camera->GetComponent<Transform>()->GetRotation();
-	float PI = 3.141592;
 
 	TransRot = XMFLOAT3(TransRot.x, PI + cameraRot.y + 0.5f, TransRot.z);
 

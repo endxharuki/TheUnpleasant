@@ -79,7 +79,6 @@ void EnemyIdleState::Update()
 	XMFLOAT3 FrontVector = parentEnemy->GetComponent<Transform>()->GetFoward();
 	XMFLOAT3 RightVector = parentEnemy->GetComponent<Transform>()->GetRight();
 
-	float PI = 3.141592;
 
 	//高さをメッシュフィールドに合わせる
 	float higth = scene->GetGameObject<MeshField>()->GetHeight(enemyPos);
@@ -185,7 +184,6 @@ void EnemyMoveState::Update()
 	XMFLOAT3 FrontVector = parentEnemy->GetComponent<Transform>()->GetFoward();
 	XMFLOAT3 RightVector = parentEnemy->GetComponent<Transform>()->GetRight();
 
-	float PI = 3.141592;
 
 	//プレイヤーまでのベクトルとエネミーが向いている方向のベクトルのなす角度を求める
 	{
@@ -292,7 +290,6 @@ void EnemyRotateState::Update()
 	XMFLOAT3 FrontVector = parentEnemy->GetComponent<Transform>()->GetFoward();
 	XMFLOAT3 RightVector = parentEnemy->GetComponent<Transform>()->GetRight();
 
-	float PI = 3.141592;
 
 	//プレイヤーまでのベクトルとエネミーが向いている方向のベクトルのなす角度を求める
 	{

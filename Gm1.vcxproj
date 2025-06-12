@@ -146,6 +146,7 @@
     <ClInclude Include="magicBlade.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
+    <ClInclude Include="math.h" />
     <ClInclude Include="meshField.h" />
     <ClInclude Include="modelRenderer.h" />
     <ClInclude Include="particle.h" />

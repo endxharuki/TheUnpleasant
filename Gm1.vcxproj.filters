@@ -590,6 +590,9 @@
     <ClInclude Include="sord.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="math.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="shader\common.hlsl">

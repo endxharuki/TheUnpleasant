@@ -71,7 +71,6 @@ public:
 	{
 
 		//角度をラジアンに直す
-		float PI = 3.141592;
 		angle.x = (PI/180.0f) * angle.x;
 		angle.y = (PI / 180.0f) * angle.y;
 		angle.z = (PI / 180.0f) * angle.z;
@@ -93,9 +92,8 @@ public:
 	void SetTransformRotAngle(const XMFLOAT3 pos, const XMFLOAT3 angle, const XMFLOAT3 size)
 	{
 		XMFLOAT3 Angle{};
-
 		//角度をラジアンに直す
-		float PI = 3.141592;
+
 		Angle.x = (PI / 180.0f) * angle.x;
 		Angle.y = (PI / 180.0f) * angle.y;
 		Angle.z = (PI / 180.0f) * angle.z;
@@ -146,8 +144,6 @@ public:
 
 	XMFLOAT3 GetRight()
 	{
-		float PI = 3.141592;
-
 		float addAngle = (PI / 180.0f) * 90.0f;
 
 		XMMATRIX rotMatrix;

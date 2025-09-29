@@ -25,7 +25,7 @@ void Circle2DCollider::Uninit()
 void Circle2DCollider::Update()
 {
 
-	if (m_Update == true)
+	if (isUpdate == true)
 	{
 
 		//スクリーンサイズ
@@ -41,7 +41,7 @@ void Circle2DCollider::Update()
 		m_Texture->SetVertexPosition(m_CenterPosition.x - m_Radius, m_CenterPosition.y - m_Radius, m_Radius * 2, m_Radius * 2);
 		m_TargetPosition = { 0.0f,0.0f };
 
-		InObject = false;
+		isInObject = false;
 		int UISize = 1;
 		int count = 0;;
 		//オブジェクトのテクスチャのサイズ
@@ -101,7 +101,7 @@ void Circle2DCollider::Update()
 
 					}
 					UISize++;
-					InObject = true;
+					isInObject = true;
 				}
 
 			}
@@ -147,7 +147,7 @@ void Circle2DCollider::Update()
 				tex->SetDelete(true);
 			}
 			m_MagicUIList.clear();
-			InObject = false;
+			isInObject = false;
 			m_TargetWorldPosition = { 0.0f,0.0f,0.0f };
 		}
 
@@ -162,7 +162,7 @@ void Circle2DCollider::Update()
 			tex->SetDelete(true);
 		}
 		m_MagicUIList.clear();
-		InObject = false;
+		isInObject = false;
 		m_OldUICount = 0;
 		m_TargetWorldPosition = { 0.0f,0.0f,0.0f };
 
@@ -171,7 +171,7 @@ void Circle2DCollider::Update()
 
 void Circle2DCollider::Draw()
 {
-	if (m_Draw == true)
+	if (isDraw == true)
 	{
 		m_Texture->SetOnDraw(true);
 		//DrawImGui();
@@ -222,7 +222,7 @@ bool Circle2DCollider::ObjectInCircle(XMFLOAT3 worldPos, int screenWidth, int sc
 
 void Circle2DCollider::DrawImGui()
 {
-	if (onImGui == true)
+	if (isImGui == true)
 	{
 
 		ImGui::Begin("InCircleObject");                          // Create a window called "Hello, world!" and append into it.
@@ -230,7 +230,7 @@ void Circle2DCollider::DrawImGui()
 
 		ImGui::Text("ndcPos x  = %.0f y = %.0f z = %.0f",ndc.x,ndc.y,ndc.z);
 
-		if (InObject == true)
+		if (isInObject == true)
 		{
 			ImGui::Text("InObject");
 		}

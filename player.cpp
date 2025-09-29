@@ -46,8 +46,6 @@ void Player::Init()
 
 	//コライダーを描画
 	GetComponent<CapsuleColliderComponent>()->OnDraw();
-	//デバッグを表示
-	GetComponent<CapsuleColliderComponent>()->OnImGui();
 
 	AddComponent<Audio>()->InitMaster();
 	GetComponent<Audio>()->Load("asset\\Audio\\wan.wav");
@@ -69,6 +67,7 @@ void Player::Init()
 
 	Tag = "Player";
 
+	//プレイヤーの行動登録
 	RegisterState(StateType::Idle, std::make_shared<PlayerIdleState>());
 	RegisterState(StateType::Move, std::make_shared<PlayerMoveState>());
 	RegisterState(StateType::Jump, std::make_shared<PlayerJumpState>());
@@ -197,8 +196,6 @@ void Player::PlayerControl()
 
 	float posRot = GetComponent<Transform>()->GetRot();
 	XMFLOAT3 cameraRot = Scene::GetInstance()->GetScene<GameScene>()->GetGameObject<PlayerCamera>()->GetComponent<Transform>()->GetRotation();
-	float PI = 3.141592;
-
 	//通常スキル
 	if (Input::GetInstance()->GetKeyTrigger(VK_SPACE))
 	{
@@ -214,10 +211,7 @@ void Player::PlayerControl()
 		else {
 			ChangeState(StateType::Idle);
 		}
-
 	}
-
-
 	//ジャンプ処理
 	if (GetKeyState('Q') & 0x8000 && m_IsGravity == false) {
 
@@ -225,12 +219,11 @@ void Player::PlayerControl()
 		//GetComponent<Audio>()->Play(false);
 
 	}
-
+	//スキル1
 	if (GetAsyncKeyState(VK_RBUTTON) & 0x8000)
 	{
 		ChangeState(StateType::Skill1);
 	}
-	
 	
 	//重力処理
 	if (m_CurrentState != nullptr)
@@ -247,7 +240,6 @@ void Player::PlayerControl()
 	else {
 		m_GravityScale = 0.05f;
 	}
-
 	if (Input::GetInstance()->GetKeyTrigger('G'))
 	{
 		m_IsGravity = !m_IsGravity;
@@ -336,6 +328,9 @@ void Player::DrawImGui()
 	XMFLOAT3 CroiderRot = GetComponent<Collider>()->GetRotation();
 	currentTime += m_PlayerTime->GetDeltaTime();
 
+	const char* currentState;
+
+
 	{
 
 		ImguiManager* imgui = Scene::GetInstance()->GetScene<GameScene>()->GetImguiManager();
@@ -361,6 +356,52 @@ void Player::DrawImGui()
 		ImGui::Text("FPS = %.1f", imgui->FrameRate);
 
 		ImGui::Text("deltaTime = %.1f", currentTime);
+
+		ImGui::Text("PlayerStateList");
+
+		for (auto type : m_StateList)
+		{
+			const char* state;
+			type.second.get()->GetName();
+			switch (type.second.get()->GetName()) {
+			case StateType::Idle:  state = "Idle";
+				break;
+			case StateType::Jump:  state = "Jump";
+				break;
+			case StateType::Attack1:state = "Attack1";
+				break;
+			case StateType::Move: state = "Move";
+				break;
+			case StateType::Attack2:state = "Attack2";
+				break;
+			case StateType::Skill1: state = "Skill1";
+				break;
+			default:  state = "Unknown";
+				break;
+			}
+
+			ImGui::Text(state);
+		}
+
+		switch (m_CurrentState.get()->GetName()) {
+		    case StateType::Idle:  currentState = "Idle";
+				break;
+		    case StateType::Jump:  currentState ="Jump";
+				break;
+		    case StateType::Attack1: currentState = "Attack1";
+				break;
+		    case StateType::Move: currentState = "Move";
+				break;
+		    case StateType::Attack2:currentState = "Attack2";
+				break;
+		    case StateType::Skill1: currentState = "Skill1";
+				break;
+		    default: currentState = "Unknown";
+				break;
+		}
+
+		ImGui::Text("currentState = %s",currentState);
+
 
 		ImGui::End();
 

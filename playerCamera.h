@@ -10,7 +10,6 @@ class PlayerCamera : public GameObject
 {
 private:
 
-	//XMFLOAT3 m_Position{};
 	XMFLOAT3 m_Target{};
 	XMFLOAT3 m_Up{0.0f,1.0f,0.0f};
 	
@@ -26,11 +25,14 @@ private:
 	
 	float frameCount[4] = { 0.0f,0.0f,0.0f,0.0f };
 
+	//マウスポインタ
 	POINT m_MousePoint;
 
+	//カーソル
 	float m_CursorX = 0.0f, m_CursorY = 0.0f;
 	float m_OldCursorX = 0.0f, m_OldCursorY = 0.0f;
 
+	//感度
 	XMFLOAT2 m_Sensitivity = {0.02f,0.01f};
 
 	//デバッグ用

@@ -28,12 +28,6 @@ void AnimationModelTest::Draw()
 		mat._31 = aiMat.a3; mat._32 = aiMat.b3; mat._33 = aiMat.c3; mat._34 = aiMat.d3;
 		mat._41 = aiMat.a4; mat._42 = aiMat.b4; mat._43 = aiMat.c4; mat._44 = aiMat.d4;
 
-		//デバッグ用
-		/*mat._11 = 0.0f; mat._12 = 0.0f; mat._13 = 0.0f; mat._14 = 0.0f;
-		mat._21 = 0.0f; mat._22 = 0.0f; mat._23 = 0.0f; mat._24 = 0.0f;
-		mat._31 = 0.0f; mat._32 = 0.0f; mat._33 = 0.0f; mat._34 = 0.0f;
-		mat._41 = 0.0f; mat._42 = 0.0f; mat._43 = 0.0f; mat._44 = 0.0f;*/
-
 		// 転置
 		XMMATRIX matTranspose = XMMatrixTranspose(XMLoadFloat4x4(&mat));
 		XMStoreFloat4x4(&mat, matTranspose);
@@ -49,8 +43,6 @@ void AnimationModelTest::Draw()
 	ID3D11InputLayout* layout = m_GameObject->GetComponent<Transform>()->GetLayout();
 
 	/*シェーダ設定*/
-	
-	//Renderer::GetDeviceContext()->PSSetShader(pixel, NULL, 0);
 	
 	//入力レイアウト設定
 	Renderer::GetDeviceContext()->IASetInputLayout(nullptr);
@@ -106,27 +98,19 @@ void AnimationModelTest::Draw()
 			material.TextureEnable = true;
 		}
 
-
 		material.Diffuse = XMFLOAT4(diffuse.r, diffuse.g, diffuse.b, opacity - m_Alpha);
 		material.Ambient = material.Diffuse;
 		Renderer::SetMaterial(material);
-
 
 		// 頂点バッファ設定
 		UINT stride = sizeof(Vertex);
 		UINT offset = 0;
 		// ComputeShaderでのスキニング処理後の頂点設定
 		Renderer::GetDeviceContext()->VSSetShaderResources(0, 1, &m_SkinningUpdateSRV[m]);
-
-		// 頂点バッファの設定
-		//Renderer::GetDeviceContext()->IASetVertexBuffers(0, 1, &m_AfterVertexBuffer, &stride, &offset); 
-
 		// インデックスバッファ設定
 		Renderer::GetDeviceContext()->IASetIndexBuffer(m_IndexBuffer[m], DXGI_FORMAT_R32_UINT, 0);
-
 		// ポリゴン描画
 		Renderer::GetDeviceContext()->DrawIndexed(mesh->mNumFaces * 3, 0, 0);
-		//Renderer::GetDeviceContext()->Draw(mesh->mNumFaces * 3, 0);
 
 	}
 
@@ -231,7 +215,7 @@ void AnimationModelTest::Load(const char* FileName)
 					assert(m_DeformVertex[m][weight.mVertexId].BoneNum <= 4);
 				}
 			}
-
+			//ボーンの番号を名前から算出
 			int n = m_DeformVertex[m].size();
 			for (int i = 0; i < n; i++)
 			{
@@ -243,13 +227,13 @@ void AnimationModelTest::Load(const char* FileName)
 						if (bone.first == m_DeformVertex[m][i].BoneName[v])
 						{
 							boneNameIndex[bone.first] = b;
-							
 						}
 					}
 					b++;
 				}
 
 			}
+			//ボーンの名前が同じのものに登録しておいた番号とボーンの影響度合いを格納
 			for (unsigned int v = 0; v < n; v++)
 			{
 				for (auto bone : boneNameIndex)
@@ -263,10 +247,8 @@ void AnimationModelTest::Load(const char* FileName)
 						}
 					}
 				}
-
 			}
 
-			
 			for (int i = 0; i < mesh->mNumVertices; i++)
 			{
 				BoneVertex& v = b_vertex[i];
@@ -307,9 +289,6 @@ void AnimationModelTest::Load(const char* FileName)
 			CreateAfterVertexBuffer(mesh->mNumVertices, vertex, m);
 			CreateAfterVertexSRV(mesh->mNumVertices, m);
 			CreateUAV(mesh->mNumVertices, m);
-
-			//CreateConstantBuffer();
-
 
 		}
 
@@ -422,37 +401,8 @@ void AnimationModelTest::CreateBone(aiNode* node, std::map<std::string, int>& bo
 
 	for (unsigned int n = 0; n < node->mNumChildren; n++)
 	{
-		CreateBone(node->mChildren[n],boneNameIndex,boneCount);
+		CreateBone(node->mChildren[n], boneNameIndex, boneCount);
 	}
-
-	//std::string boneName = node->mName.C_Str();
-
-	//// すでに登録済みのボーンでないか確認
-	//if (m_Bone.find(boneName) == m_Bone.end())
-	//{
-	//	BONE newBone;
-
-	//	// Assimp の aiMatrix4x4 から直接代入
-	//	newBone.Matrix = node->mTransformation;
-
-	//	// AnimationMatrix は初期化済みのまま
-	//	// OffsetMatrix もここでは変更しない（後で aiBone->mOffsetMatrix を適用する）
-
-	//	m_Bone[boneName] = newBone;
-	//}
-
-	//// ボーン名 → インデックスへの登録
-	//if (boneNameIndex.find(boneName) == boneNameIndex.end())
-	//{
-	//	boneNameIndex[boneName] = boneCount;
-	//	boneCount++;
-	//}
-
-	//// 子ボーンを再帰的に登録
-	//for (unsigned int n = 0; n < node->mNumChildren; n++)
-	//{
-	//	CreateBone(node->mChildren[n], boneNameIndex, boneCount);
-	//}
 }
 
 void AnimationModelTest::Update(const char* AnimationName1, int Frame1,
@@ -560,14 +510,6 @@ void AnimationModelTest::UpdateBoneMatrix(aiNode* node, aiMatrix4x4 matrix)
 	worldMatrix *= bone->AnimationMatrix;
 
 	bone->Matrix = worldMatrix;
-
-	//aiString boneName;
-	//boneName.Set("Hips"); // 例: "Hips" という名前をセット
-
-	//if (strcmp(boneName.C_Str(), "Hips") == 0) {
-	//	
-	//	
-	//}
 	
 	//これで部位のマトリクスは取れる
 	if (strcmp(node->mName.C_Str(), "mixamorig7:RightHand") == 0)

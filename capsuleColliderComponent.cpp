@@ -521,7 +521,7 @@ void CapsuleColliderComponent::MoveCollision()
 //		penetrationStart = ToWorldSpace(penetrationStart, box);
 //		penetrationEnd = ToWorldSpace(penetrationEnd, box);
 //
-//		float PI = 3.14159265359 / 2;
+//		 = 3.14159265359 / 2;
 //		/*(PI / 180.0f)* angle.x;*/
 //		XMFLOAT3 t = { 0.0f,1.0f,0.0f };
 //

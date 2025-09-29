@@ -27,44 +27,6 @@ void CylinderColliderComponent::Draw()
 {
 }
 
-bool CylinderColliderComponent::IsCollision()
-{
-	XMFLOAT3 parentTransPos = GetGameObject()->GetComponent<Transform3DComponent>()->GetPosition();
-	XMFLOAT3 parentColliderPos = GetGameObject()->GetComponent<Collider>()->GetPosition();
-	XMFLOAT3 parentColliderSize = GetGameObject()->GetComponent<Collider>()->GetSize();
-	XMFLOAT3 pos;
-	XMFLOAT3 size;
-
-	std::list<GameObject*> objlist = Scene::GetInstance()->GetScene<GameScene>()->GetGameObjectList(1);
-
-	for (auto obj : objlist)
-	{
-
-		if (obj->GetComponent<Collider>() == nullptr) {
-			continue;
-		}
-		if (GetGameObject() == obj) {
-			continue;
-		}
-
-		pos = obj->GetComponent<CylinderColliderComponent>()->GetPosition();
-		size = obj->GetComponent<CylinderColliderComponent>()->GetSize();
-
-		if (parentColliderPos.z - (parentColliderSize.z) <= pos.z + (size.z) &&
-			parentColliderPos.z + (parentColliderSize.z) >= pos.z - (size.z) &&
-			parentColliderPos.x - (parentColliderSize.x) <= pos.x + (size.x) &&
-			parentColliderPos.x + (parentColliderSize.x) >= pos.x - (size.x) &&
-			parentColliderPos.y - (parentColliderSize.y / 2) <= pos.y + (size.y) &&
-			parentColliderPos.y + (parentColliderSize.y) >= pos.y - (size.y)
-			)
-		{
-
-			return true;
-		}
-	}
-
-	return false;
-}
 
 //あった判定と最初に当たったオブジェクトと当たっているオブジェクトリストを返します
 std::tuple<bool, GameObject*, std::list<GameObject*>> CylinderColliderComponent::GetCollision()

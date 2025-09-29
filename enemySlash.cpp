@@ -60,7 +60,6 @@ void EnemySlash::Init()
 		XMFLOAT3 vector = { capsulePos.x - enemyPos.x,(capsulePos.y - enemyPos.y) - 1.0f,capsulePos.z - enemyPos.z };
 
 		//vector = Normalize(vector, length);
-		float PI = 3.141592;
 
 		////斜めにする
 		float Rot = PI / 4;
@@ -129,8 +128,6 @@ void EnemySlash::Update()
 
 	
 	XMFLOAT3 capsulePos = GetComponent<Collider>()->GetPosition();
-	
-	float PI = 3.141592;
 
 
 	//球座標タイプ

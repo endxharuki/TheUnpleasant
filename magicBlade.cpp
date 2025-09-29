@@ -73,9 +73,6 @@ void MagicBlade::Init()
 
 	XMFLOAT3 vector = { capsulePos.x - playerPos.x,(capsulePos.y - playerPos.y) - 1.0f,capsulePos.z - playerPos.z };
 
-	//vector = Normalize(vector, length);
-	float PI = 3.141592;
-
 	////ŽÎ‚ß‚É‚·‚é
 	float Rot = PI / 4;
 
@@ -140,7 +137,6 @@ void MagicBlade::Update()
 	/*XMFLOAT3 capsulePos = GetComponent<Collider>()->GetPosition();*/
 	if (m_OnBurst == false)
 	{
-		float PI = 3.141592;
 		XMFLOAT3 texpos = { playerPos.x + (length * sinf(playerRot.y)),playerPos.y + 1.5f ,playerPos.z + (length * cosf(playerRot.y)) };
 		XMFLOAT3 capsulePos = { playerPos.x + (length * sinf(playerRot.y)),playerPos.y + 1.5f ,playerPos.z + (length * cosf(playerRot.y)) };
 
@@ -162,7 +158,7 @@ void MagicBlade::Update()
 		XMFLOAT3 targetPos = Scene::GetInstance()->GetScene<GameScene>()->GetGameObject<PlayerCamera>()->GetComponent<Circle2DCollider>()->GetTragetWorldPosition();
 
 		m_TargetVector = { targetPos.x - playerPos.x,targetPos.y - playerPos.y ,targetPos.z - playerPos.z };
-		m_TargetVector = GetComponent<GameObjectComponent>()->Normalize(m_TargetVector);
+		m_TargetVector = Normalize(m_TargetVector);
 
 		GetComponent<CapsuleColliderComponent>()->MoveCollision();
 

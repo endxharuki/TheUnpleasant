@@ -22,17 +22,17 @@ private:
 	XMMATRIX m_ViewMatrix = {};
 	XMMATRIX m_ProjectionMatrix = {};
 
-	bool m_Update = true;
-	bool m_Draw = true;
+	bool isUpdate = true;
+	bool isDraw = true;
 
 	Texture2D* m_Texture;
 	std::vector<Texture2D*> m_MagicUIList;
 	std::vector<std::pair<XMFLOAT2, XMFLOAT3>> m_TargetPositionList;
 	int m_OldUICount = 0;
 
-	bool onImGui = false;
+	bool isImGui = false;
 
-	bool InObject = false;
+	bool isInObject = false;
 
 public:
 
@@ -53,16 +53,16 @@ public:
 	bool ObjectInCircle(XMFLOAT3 worldPos,int screenWidth, int screenHeight,float &screenPosX,float &screenPosY);
 	void OnImGui()
 	{
-		onImGui = true;
+		isImGui = true;
 	}
 
 	void DrawImGui();
 
-	void CircleUpdateState(bool state) { m_Update = state; }
-	void CircleDrawState(bool state) { m_Draw = state; }
+	void CircleUpdateState(bool state) { isUpdate = state; }
+	void CircleDrawState(bool state) { isDraw = state; }
 
 	XMFLOAT2 GetTargetPosition() const { return m_TargetPosition; }
-	bool GetIsInObject() const { return InObject; }
+	bool GetIsInObject() const { return isInObject; }
 
 	XMFLOAT3 GetTragetWorldPosition() const{ return m_TargetWorldPosition; }
 };

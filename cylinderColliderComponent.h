@@ -15,8 +15,6 @@ public:
 	void Update() override;
 	void Draw() override;
 
-
-	bool IsCollision();
 	std::tuple<bool, GameObject*,std::list<GameObject*>> GetCollision() override;
 
 };

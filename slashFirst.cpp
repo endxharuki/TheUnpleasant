@@ -46,6 +46,7 @@ void SlashFirst::Init()
 	vertex[3].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	vertex[3].TexCoord = XMFLOAT2(1.0f, 1.0f);
 
+	//エフェクトテクスチャの登録
 	AddComponent<Transform2DComponent>()->AddTextureData(TexturePool::GetInstance()->GetTexture("slashFirst"));
 	GetComponent<Transform2DComponent>()->SetVertex(vertex);
 	GetComponent<Transform2DComponent>()->SetIsBilboad(true);
@@ -70,27 +71,20 @@ void SlashFirst::Init()
 
 	GetComponent<CapsuleColliderComponent>()->SetRotation(XMFLOAT3(r.x,playerRot.y,r.z));
 
-
 	XMFLOAT3 vector = { capsulePos.x - playerPos.x,(capsulePos.y - playerPos.y) - 1.0f,capsulePos.z - playerPos.z };
-
-	//vector = Normalize(vector, length);
-	float PI = 3.141592;
 
 	////斜めにする
 	float Rot = PI / 4;
 
-
 	//球座標タイプ
 	GetComponent<Collider>()->RotateAroundInit(playerPos);
 	GetComponent<Collider>()->RotateAround(-Rot, -Rot);
+
+	XMFLOAT3 capsule = GetComponent<Collider>()->GetPosition();
 	
+	capsule = GetComponent<Collider>()->GetRotatePosition(playerPos);
 
-	XMFLOAT3 p = GetComponent<Collider>()->GetPosition();
-	
-	p = GetComponent<Collider>()->GetRotatePosition(playerPos);
-
-	GetComponent<CapsuleColliderComponent>()->SetPosition(p);
-
+	GetComponent<CapsuleColliderComponent>()->SetPosition(capsule);
 	
 	//カプセルの設定
 	GetComponent<CapsuleColliderComponent>()->SetCenterPosLnegth(1.0f);
@@ -140,8 +134,6 @@ void SlashFirst::Update()
 
 	XMFLOAT3 capsulePos = GetComponent<Collider>()->GetPosition();
 	
-	float PI = 3.141592;
-
 	//球座標タイプ
 	float rotScale = PI * 0.05f;
 
@@ -217,9 +209,7 @@ void SlashFirst::HitAttackCollision()
 				if (obj->GetStates()->hit == false)
 				{
 					m_ParentObject->SetHitStopState(true);
-					/*float hp = obj->GetStates().HP;
-					hp -= 1.0f;
-					obj->SetStates(hp, 0.0f, true,count);*/
+
 					Explosion* explosion = Scene::GetInstance()->GetScene<GameScene>()->AddGameObject<Explosion>(1);
 					//プレイヤーを登録
 					explosion->AddParentGameObject(m_ParentObject);

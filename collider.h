@@ -150,7 +150,6 @@ public:
 	{
 
 		//Šp“x‚ðƒ‰ƒWƒAƒ“‚É’¼‚·
-		float PI = 3.141592;
 		angle.x = (PI / 180.0f) * angle.x;
 		angle.y = (PI / 180.0f) * angle.y;
 		angle.z = (PI / 180.0f) * angle.z;

@@ -261,7 +261,7 @@ void Wave::Update()
 	const int steps = 300; // シミュレーションステップ数
 
 	float Cycle = 20.0f;
-	float PI = 3.141592 / 2;
+	float pi = PI / 2;
 	float length = 0.0f;
 	float LENGTH = 20.0f;
 	
@@ -328,7 +328,7 @@ void Wave::Update()
 				float dz = m_Vertex[x][z].Position.z - m_Vertex[cameraX][cameraZ].Position.z;
 				length = sqrt(dx * dx + dz * dz);
 
-				m_Vertex[x][z].Position.y = Amp * sinf((((2.0f * PI) / LENGTH) * length) - (((2.0f * PI) / Cycle) - Time)) + 1.0f;
+				m_Vertex[x][z].Position.y = Amp * sinf((((2.0f * pi) / LENGTH) * length) - (((2.0f * pi) / Cycle) - Time)) + 1.0f;
 			}
 		}
 

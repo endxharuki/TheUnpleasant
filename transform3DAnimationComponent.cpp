@@ -13,7 +13,6 @@ void Transform3DAnimationComponent::Init()
 		//m_Model->Load(m_ModelData);*/
 
 		Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, m_ShaderVS);
-		//Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, m_ShaderVS);
 		Renderer::CreatePixelShader(&m_PixelShader, m_ShaderPS);
 
 		ComponentNumber = 2;
@@ -38,7 +37,7 @@ void Transform3DAnimationComponent::Uninit()
 void Transform3DAnimationComponent::Update()
 {
 	
-	//m_Model->Update(m_AnimationName.c_str(), m_AnimationFrame, m_AnimationName.c_str(), m_AnimationFrame, m_AnimationBolendRatio);
+	//m_Model->Update(m_CurrentAnimationName.c_str(), m_AnimationFrame, m_NextAnimationName.c_str(), m_AnimationFrame, m_AnimationBolendRatio);
 	m_TestModel->Update(m_CurrentAnimationName.c_str(), m_AnimationFrame, m_NextAnimationName.c_str(), m_AnimationFrame, m_AnimationBolendRatio);
 
 	if (m_DelayFrame == m_Delay)
@@ -50,14 +49,14 @@ void Transform3DAnimationComponent::Update()
 	m_DelayFrame++;
 
 	//アニメーションのステートが変わったらAnimationBolendRatioを0にして
-	if (m_ChangeState == true)
+	if (isChangeState == true)
 	{
 		m_AnimationBolendRatio += 0.1f;
 		if (m_AnimationBolendRatio > 1.0f)
 		{
 			m_AnimationBolendRatio = 1.0f;
 			m_CurrentAnimationName = m_NextAnimationName;
-			m_ChangeState = false;
+			isChangeState = false;
 		}
 	}
 

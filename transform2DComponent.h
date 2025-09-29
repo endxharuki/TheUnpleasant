@@ -21,17 +21,6 @@ private:
 public:
 
 	Transform2DComponent() = default;
-	/*Transform2DComponent(GameObject* obj, const wchar_t* date) : Transform(obj), TextureData(date) {}*/
-
-	/*void AddTextrueData(const wchar_t* date) {
-		TextureData = date; 
-		TexMetadata metadata;
-		ScratchImage image;
-		LoadFromWICFile(TextureData, WIC_FLAGS_NONE, &metadata, image);
-		CreateShaderResourceView(Renderer::GetDevice(), image.GetImages(), image.GetImageCount(), metadata, &m_3DTexture);
-		assert(m_3DTexture);
-	
-	}*/
 
 	void AddTextureData(ID3D11ShaderResourceView* texture)
 	{

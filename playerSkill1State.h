@@ -20,7 +20,7 @@ public:
 	void Update() override;
 	void Exit() override;
 
-	StateType GetName() const { return StateType::Attack1; }
+	StateType GetName() const { return StateType::Skill1; }
 
 };
 

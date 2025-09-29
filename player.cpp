@@ -46,8 +46,6 @@ void Player::Init()
 
 	//コライダーを描画
 	GetComponent<CapsuleColliderComponent>()->OnDraw();
-	//デバッグを表示
-	GetComponent<CapsuleColliderComponent>()->OnImGui();
 
 	AddComponent<Audio>()->InitMaster();
 	GetComponent<Audio>()->Load("asset\\Audio\\wan.wav");
@@ -330,6 +328,9 @@ void Player::DrawImGui()
 	XMFLOAT3 CroiderRot = GetComponent<Collider>()->GetRotation();
 	currentTime += m_PlayerTime->GetDeltaTime();
 
+	const char* currentState;
+
+
 	{
 
 		ImguiManager* imgui = Scene::GetInstance()->GetScene<GameScene>()->GetImguiManager();
@@ -355,6 +356,52 @@ void Player::DrawImGui()
 		ImGui::Text("FPS = %.1f", imgui->FrameRate);
 
 		ImGui::Text("deltaTime = %.1f", currentTime);
+
+		ImGui::Text("PlayerStateList");
+
+		for (auto type : m_StateList)
+		{
+			const char* state;
+			type.second.get()->GetName();
+			switch (type.second.get()->GetName()) {
+			case StateType::Idle:  state = "Idle";
+				break;
+			case StateType::Jump:  state = "Jump";
+				break;
+			case StateType::Attack1:state = "Attack1";
+				break;
+			case StateType::Move: state = "Move";
+				break;
+			case StateType::Attack2:state = "Attack2";
+				break;
+			case StateType::Skill1: state = "Skill1";
+				break;
+			default:  state = "Unknown";
+				break;
+			}
+
+			ImGui::Text(state);
+		}
+
+		switch (m_CurrentState.get()->GetName()) {
+		    case StateType::Idle:  currentState = "Idle";
+				break;
+		    case StateType::Jump:  currentState ="Jump";
+				break;
+		    case StateType::Attack1: currentState = "Attack1";
+				break;
+		    case StateType::Move: currentState = "Move";
+				break;
+		    case StateType::Attack2:currentState = "Attack2";
+				break;
+		    case StateType::Skill1: currentState = "Skill1";
+				break;
+		    default: currentState = "Unknown";
+				break;
+		}
+
+		ImGui::Text("currentState = %s",currentState);
+
 
 		ImGui::End();
 

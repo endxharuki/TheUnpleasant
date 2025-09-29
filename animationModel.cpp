@@ -4,14 +4,6 @@
 
 void AnimationModel::Draw()
 {
-	
-
-	//context->IASetVertexBuffers(0, 1, m_VertexBuffer, &stride, &offset);
-	//入力レイアウト設定
-	Renderer::GetDeviceContext()->IASetInputLayout(m_VertexLayout);
-
-	Renderer::GetDeviceContext()->VSSetShader(m_VertexShader, NULL, 0);
-	
 	// プリミティブトポロジ設定
 	Renderer::GetDeviceContext()->IASetPrimitiveTopology(
 		D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -82,14 +74,12 @@ void AnimationModel::Load(const char* FileName)
 	m_IndexBuffer = new ID3D11Buffer * [m_AiScene->mNumMeshes];
 
 
-	Renderer::CreateVertexShader(&m_VertexShader, &m_VertexLayout, "shader\\unlitTextureVS.cso");
-
 	//変形後頂点配列生成
 	m_DeformVertex = new std::vector<DEFORM_VERTEX>[m_AiScene->mNumMeshes];
 
 	//再帰的にボーン生成
 	CreateBone(m_AiScene->mRootNode);
-	m_AiScene->mRootNode->mTransformation;
+
 
 	for (unsigned int m = 0; m < m_AiScene->mNumMeshes; m++)
 	{
@@ -197,15 +187,8 @@ void AnimationModel::Load(const char* FileName)
 				assert(m_DeformVertex[m][weight.mVertexId].BoneNum <= 4);
 			}
 		}
-
-		m_DeformVertex[m];
-
-		float h = m_DeformVertex[m][0].BoneNum;
-
 	}
 
-	
-	
 
 
 	//テクスチャ読み込み
@@ -225,10 +208,7 @@ void AnimationModel::Load(const char* FileName)
 		m_Texture[aitexture->mFilename.data] = texture;
 	}
 
-	
-	int boneCount = m_Bone.size();
 
-	CreateBoneBuffer(boneCount);
 
 }
 
@@ -289,9 +269,6 @@ void AnimationModel::Update(const char* AnimationName1, int Frame1,
 	const char* AnimationName2, int Frame2,
 	float BlendRatio)
 {
-
-	//return;
-
 	if (m_Animation.count(AnimationName1) == 0)
 		return;
 	if (m_Animation.count(AnimationName2) == 0)
@@ -372,7 +349,6 @@ void AnimationModel::Update(const char* AnimationName1, int Frame1,
 	aiMatrix4x4 rootMatrix = aiMatrix4x4(aiVector3D(1.0f, 1.0f, 1.0f), aiQuaternion((float)AI_MATH_PI, 0.0f, 0.0f), aiVector3D(0.0f, 0.0f, 0.0f));
 	UpdateBoneMatrix(m_AiScene->mRootNode, rootMatrix);
 
-
 	//頂点返還(CPUスキニング)	
 	for (unsigned int m = 0; m < m_AiScene->mNumMeshes; m++)
 	{
@@ -395,11 +371,11 @@ void AnimationModel::Update(const char* AnimationName1, int Frame1,
 			matrix[3] = m_Bone[deformVertex->BoneName[3]].Matrix;
 
 
-			////ウェイトを考慮してマトリクス算出
+			//ウェイトを考慮してマトリクス算出
 			//outMatrix = matrix[0] * deformVertex->BoneWeight[0]
-			//	+ matrix[1] * deformVertex->BoneWeight[1]
-			//	+ matrix[2] * deformVertex->BoneWeight[2]
-			//	+ matrix[3] * deformVertex->BoneWeight[3];
+			//			+ matrix[1] * deformVertex->BoneWeight[1]
+			//			+ matrix[2] * deformVertex->BoneWeight[2]
+			//			+ matrix[3] * deformVertex->BoneWeight[3]
 			{
 				outMatrix.a1 = matrix[0].a1 * deformVertex->BoneWeight[0]
 					+ matrix[1].a1 * deformVertex->BoneWeight[1]
@@ -526,70 +502,8 @@ void AnimationModel::UpdateBoneMatrix(aiNode* node, aiMatrix4x4 matrix)
 	bone->Matrix = worldMatrix;
 	bone->Matrix *= bone->OffsetMatrix;
 
-	//これで部位のマトリクスは取れる
-	if (strcmp(node->mName.C_Str(), "mixamorig7:RightHand") == 0)
-	{
-
-			XMFLOAT4X4 mat = {};
-
-			mat._11 = 0.0f; mat._12 = 0.0f; mat._13 = 0.0f; mat._14 = 0.0f;
-			mat._21 = 0.0f; mat._22 = 0.0f; mat._23 = 0.0f; mat._24 = 0.0f;
-			mat._31 = 0.0f; mat._32 = 0.0f; mat._33 = 0.0f; mat._34 = 0.0f;
-			mat._41 = 0.0f; mat._42 = 0.0f; mat._43 = 0.0f; mat._44 = 0.0f;
-
-			aiMatrix4x4& aiMat = bone->Matrix;
-
-			mat._11 = aiMat.a1; mat._12 = aiMat.b1; mat._13 = aiMat.c1; mat._14 = aiMat.d1;
-			mat._21 = aiMat.a2; mat._22 = aiMat.b2; mat._23 = aiMat.c2; mat._24 = aiMat.d2;
-			mat._31 = aiMat.a3; mat._32 = aiMat.b3; mat._33 = aiMat.c3; mat._34 = aiMat.d3;
-			mat._41 = aiMat.a4; mat._42 = aiMat.b4; mat._43 = aiMat.c4; mat._44 = aiMat.d4;
-
-			/*mat._11 = 0.0f; mat._12 = 0.0f; mat._13 = 0.0f; mat._14 = 0.0f;
-			mat._21 = 0.0f; mat._22 = 0.0f; mat._23 = 0.0f; mat._24 = 0.0f;
-			mat._31 = 0.0f; mat._32 = 0.0f; mat._33 = 0.0f; mat._34 = 0.0f;
-			mat._41 = 0.0f; mat._42 = 0.0f; mat._43 = 0.0f; mat._44 = 0.0f;*/
-
-			// 転置
-			XMMATRIX matTranspose = XMMatrixTranspose(XMLoadFloat4x4(&mat));
-			m_RightHandMatrix = matTranspose;
-			/*XMStoreFloat4x4(&mat, matTranspose);
-
-			boneMatrix->boneMatrices[i] = mat;*/
-
-	}
-
 	for (unsigned int n = 0; n < node->mNumChildren; n++)
 	{
 		UpdateBoneMatrix(node->mChildren[n], worldMatrix);
 	}
-}
-
-void AnimationModel::CreateBoneBuffer(int boneCount)
-{
-
-	D3D11_BUFFER_DESC desc = {};
-	desc.Usage = D3D11_USAGE_DEFAULT;
-	desc.ByteWidth = sizeof(DirectX::XMMATRIX) * boneCount;
-	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-	desc.StructureByteStride = sizeof(DirectX::XMMATRIX);
-	desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
-
-	Renderer::GetDevice()->CreateBuffer(&desc, nullptr, &m_BoneBuffer);
-
-	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-	srvDesc.Format = DXGI_FORMAT_UNKNOWN;
-	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
-	srvDesc.Buffer.ElementWidth = boneCount;
-
-	Renderer::GetDevice()->CreateShaderResourceView(m_BoneBuffer, &srvDesc, &m_BoneSRV);
-
-	Renderer::CreateVertexShader(&m_VertexShader, nullptr, "shader\\modelSkinning.cso");
-
-
-}
-
-void AnimationModel::UpdateBoneBuffer(std::vector<aiMatrix4x4> boneMatrices)
-{
-	Renderer::GetDeviceContext()->UpdateSubresource(m_BoneBuffer, 0, nullptr, boneMatrices.data(), 0, 0);
-
 }

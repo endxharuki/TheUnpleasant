@@ -27,7 +27,7 @@ private:
 
 	const char* m_ModelData = "‚È‚µ";
 
-	bool m_ChangeState = false;
+	bool isChangeState = false;
 
 public:
 
@@ -39,13 +39,17 @@ public:
 
 		m_ModelData = data; 
 	    m_TestModel->Load(m_ModelData);
+		//m_Model->Load(m_ModelData);
+
 
 	}
 	void AddAnimationData(const char* modeldata,const char* statedata)
 	{
 		if (m_ModelData != "‚È‚µ") {
 			m_TestModel->LoadAnimation(modeldata, statedata);
+			//m_Model->LoadAnimation(modeldata, statedata);
 			m_AnimationList.emplace(statedata, modeldata);
+			
 
 		}
 	}
@@ -61,7 +65,7 @@ public:
 				//ó‘Ô•Ï‰»
 				m_NextAnimationName = name;
 				m_AnimationBolendRatio = 0.0f;
-				m_ChangeState = true;
+				isChangeState = true;
 				m_AnimationFrame = 0.0f;
 
 			}

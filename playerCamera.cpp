@@ -128,7 +128,7 @@ void PlayerCamera::Draw()
 
 	GetComponent<Circle2DCollider>()->SetViewMatrix(vierMatrix);
 	GetComponent<Circle2DCollider>()->SetProjectionMatrix(projectionMatrix);
-	//DrawImGui();
+	DrawImGui();
 
 	
 

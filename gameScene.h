@@ -42,18 +42,6 @@ public:
 
 	std::list<GameObject*> GetGameObjectList(int i)
 	{
-		/*std::list<GameObject*> flatdata;
-
-		for (int i = 0; i < 3; i++)
-		{
-			for (auto obj : m_GameObjectList[i])
-			{
-				flatdata.push_back(obj);
-			}
-
-		}*/
-
-		//return flatdata;		
 		return m_GameObjectList[i];
 
 	}

@@ -8,7 +8,7 @@ class BoxColliderComponent : public Collider
 {
 private:
 
-
+	//ボックスの構造体
 	Box m_OBB =
 	{
 		{0.0f,0.0f,0.0f},
